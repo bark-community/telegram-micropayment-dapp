@@ -1,0 +1,174 @@
+@import '../styles/Shimmering.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--gray-gray50);
+  min-height: 100vh;
+}
+
+/* Hovered links */
+a:hover {
+  text-decoration: underline; /* Hover effect for links */
+}
+
+/* Scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+}
+
+/* Scrollbar for other Browsers */
+/* Width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* horizontal scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track:vertical {
+  margin: 2px 0;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  margin: 0 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-background-default);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+:root {
+  /* color pallete */
+  --gray-gray900: #444651;
+  --gray-gray800: #595b6a;
+  --gray-gray700: #6a6e81;
+  --gray-gray600: #80828D;
+  --gray-gray500: #8e93ab;
+  --gray-gray400: #9fa3b9;
+  --gray-gray300: #b2b5c8;
+  --gray-gray200: #F9F9FB;
+  --gray-gray100: #dde0e9;
+  --gray-gray50: #f2f2f7;
+
+  --orange-orange900: #d16f2c;
+  --orange-orange800: #eab190;
+  --orange-orange700: #ff4c00;
+  --orange-orange600: #ff7a00;
+  --orange-orange500: #ff8000;
+  --orange-orange400: #ffaa00;
+  --orange-orange300: #ffbf00;
+  --orange-orange200: #ffcb33;
+  --orange-orange100: #ffdd80;
+  --orange-orange50: #fffac2;
+
+  --green-green800: #08a200;
+  --green-green600: #34c759;
+  --green-green400: #56dd6e;
+  --green-green100: #cdf0d3;
+  --green-green50: #e5f7e8;
+
+  --red-red500: #ff3b30;
+
+  --orange-orange700: #ff4c00;
+  --red-red50: #ffebee;
+
+  --orange-orange500: #ff8000;
+  --orange-orange50: #fffac2;
+
+  --black-black900: #020d17;
+  --black-black400: #8e8e93;
+  --black-black50: #f5f5f5;
+
+  --white-white900: #ffffff;
+
+  --pink-pink600: #ff007a;
+}
+
+@keyframes textAnimation {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-50%);
+    opacity: 0.5;
+  }
+  90% {
+    transform: translateY(-90%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-text {
+  animation: textAnimation 3s linear forwards;
+}
+
+.delay-1 {
+  animation-delay: 1s;
+  animation: textAnimation 4s linear forwards;
+}
+
+.delay-2 {
+  animation: textAnimation 6s linear forwards;
+  animation-delay: 1s;
+}
+
+/* Improved box shadow for elements */
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for links */
+a:hover {
+  text-decoration: underline;
+}
+
+/* Placeholder color for input fields */
+input::placeholder {
+  color: var(--gray-gray500);
+}
+
+/* Media queries for mobile responsiveness */
+@media screen and (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  /* For example, reduce padding, font sizes, or margins */
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  /* Hide certain elements or reduce their size */
+  .sidebar {
+    display: none;
+  }
+}
