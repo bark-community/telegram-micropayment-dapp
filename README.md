@@ -40,6 +40,10 @@ To start the project in development mode:
 ```bash
 yarn dev
 ```
+or
+```
+npm run dev
+```
 
 ## Usage
 

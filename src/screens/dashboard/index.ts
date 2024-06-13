@@ -1,1 +1,1 @@
-export { DashboardMain } from './DashboardMain';
+import DashboardMain from './DashboardMain';

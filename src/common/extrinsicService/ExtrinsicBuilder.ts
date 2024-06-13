@@ -11,6 +11,7 @@ export function useExtrinsicBuilderFactory(): ExtrinsicBuilderFactory {
 
   async function forChain(chainId: ChainId): Promise<ExtrinsicBuilder> {
     const connection = await getConnection(chainId);
+
     return createExtrinsicBuilder(connection.api);
   }
 
@@ -19,38 +20,25 @@ export function useExtrinsicBuilderFactory(): ExtrinsicBuilderFactory {
   };
 }
 
-/**
- * Creates an ExtrinsicBuilder instance configured with the provided API.
- * @param api The API instance to use for extrinsic building.
- * @returns An ExtrinsicBuilder instance.
- */
 function createExtrinsicBuilder(api: ApiPromise): ExtrinsicBuilder {
   const calls: Array<SubmittableExtrinsic<any>> = [];
 
-  /**
-   * Adds a call to the list of calls for the extrinsic.
-   * @param call The call to add.
-   */
   const addCall = (call: SubmittableExtrinsic<'promise'>) => {
     calls.push(call);
   };
 
-  /**
-   * Builds the final SubmittableExtrinsic based on the added calls and batch mode options.
-   * @param options Options for building the extrinsic.
-   * @returns The built SubmittableExtrinsic.
-   * @throws Error if the extrinsic is empty or an unsupported batch mode is specified.
-   */
-  const build = (options?: Partial<ExtrinsicBuildingOptions>): SubmittableExtrinsic<'promise'> => {
+  const build = (options?: Partial<ExtrinsicBuildingOptions>) => {
     const optionsWithDefaults = optionsOrDefault(options);
 
     switch (calls.length) {
+      // while empty extrinsic is still a valid extrinsic, we consider it to be a logic error
       case 0:
-        throw new Error('Empty extrinsic');
+        throw Error('Empty extrinsic');
       case 1:
         return calls[0];
       default: {
         const batchCall = getBatchCall(api, optionsWithDefaults.batchMode);
+
         return batchCall(calls);
       }
     }
@@ -63,14 +51,7 @@ function createExtrinsicBuilder(api: ApiPromise): ExtrinsicBuilder {
   };
 }
 
-/**
- * Returns the appropriate batch call function based on the specified batch mode.
- * @param api The API instance.
- * @param mode The batch mode.
- * @returns The batch call function.
- * @throws Error if an unsupported batch mode is specified.
- */
-function getBatchCall(api: ApiPromise, mode: BatchMode): SubmittableExtrinsicFunction<'promise'> {
+function getBatchCall(api: ApiPromise, mode: BatchMode): SubmittableExtrinsicFunction<any> {
   switch (mode) {
     case BatchMode.BATCH:
       return api.tx.utility.batch;
@@ -78,16 +59,9 @@ function getBatchCall(api: ApiPromise, mode: BatchMode): SubmittableExtrinsicFun
       return api.tx.utility.batchAll;
     case BatchMode.FORCE_BATCH:
       return api.tx.utility.forceBatch;
-    default:
-      throw new Error(`Unsupported batch mode: ${mode}`);
   }
 }
 
-/**
- * Merges the provided options with default options for extrinsic building.
- * @param options The provided options.
- * @returns The merged options.
- */
 function optionsOrDefault(options?: Partial<ExtrinsicBuildingOptions>): ExtrinsicBuildingOptions {
   return {
     batchMode: options?.batchMode ?? BatchMode.BATCH,
