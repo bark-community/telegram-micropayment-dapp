@@ -2,7 +2,7 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { Balance } from '@polkadot/types/interfaces';
 
-import { AssetType, ChainId, TransferAsset } from '@common/types';
+import { AssetType, ChainId, TrasferAsset } from '@common/types';
 import { TransactionType, useExtrinsicProvider } from '@common/extrinsicService';
 import { formatAmount, getAssetId, isStatemineAsset, ASSET_LOCATION, FAKE_ACCOUNT_ID } from '../utils';
 import { Asset } from '../chainRegistry';
@@ -11,7 +11,7 @@ type SendTransaction = {
   destinationAddress: string;
   chainId: ChainId;
   asset: Asset;
-  transferAmount?: string;
+  transferAmmount?: string;
   transferAll?: boolean;
   keyring?: KeyringPair;
 };
@@ -26,7 +26,7 @@ export function useExtrinsic() {
   async function sendTransaction({
     destinationAddress,
     chainId,
-    transferAmount,
+    transferAmmount,
     asset,
     transferAll,
     keyring,
@@ -35,7 +35,7 @@ export function useExtrinsic() {
     const assetId = getAssetId(asset);
     const args = {
       dest: address,
-      value: transferAmount,
+      value: transferAmmount,
       asset: assetId,
     };
     let signOptions;
@@ -64,30 +64,30 @@ export function useExtrinsic() {
   }
 
   async function handleSendGift(
-    { chainId, amount, transferAll, asset, fee }: TransferAsset,
+    { chainId, amount, transferAll, asset, fee }: TrasferAsset,
     giftTransferAddress: string,
   ) {
-    const transferAmount = formatAmount(amount as string, asset.precision);
+    const transferAmmount = formatAmount(amount as string, asset.precision);
 
     if (isStatemineAsset(asset?.type)) {
       // Fee is 2x the transfer fee - we add 1 fee to the transfer amount
-      const giftAmount = Math.ceil(+transferAmount + fee! / 2).toString();
+      const giftAmount = Math.ceil(+transferAmmount + fee! / 2).toString();
 
       return await sendTransaction({
         destinationAddress: giftTransferAddress,
         chainId,
-        transferAmount: giftAmount,
+        transferAmmount: giftAmount,
         asset,
       });
     }
 
     const trasferAllFee = await handleFee(chainId, TransactionType.TRANSFER_ALL);
-    const giftAmount = (+transferAmount + trasferAllFee).toString();
+    const giftAmount = (+transferAmmount + trasferAllFee).toString();
 
     return await sendTransaction({
       destinationAddress: giftTransferAddress,
       chainId,
-      transferAmount: giftAmount,
+      transferAmmount: giftAmount,
       transferAll,
       asset,
     });

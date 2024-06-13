@@ -18,7 +18,6 @@ interface ExtrinsicService {
 export function useExtrinsicService(): ExtrinsicService {
   const extrinsicBuilderFactory = useExtrinsicBuilderFactory();
 
-  // Map transaction types to their respective functions
   const getExtrinsic: Record<
     TransactionType,
     (args: Record<string, any>, api: ApiPromise) => SubmittableExtrinsic<'promise'>
@@ -31,20 +30,21 @@ export function useExtrinsicService(): ExtrinsicService {
     [TransactionType.TRANSFER_STATEMINE]: ({ dest, value, asset }, api) => api.tx.assets.transfer(asset, dest, value),
   };
 
-  // Prepare an extrinsic for the specified chain and transaction
   const prepareExtrinsic = async (
     chainId: ChainId,
     transaction: ExtrinsicTransaction,
     options?: Partial<ExtrinsicBuildingOptions>,
   ): Promise<SubmittableExtrinsic<any>> => {
     const extrinsicBuilder = await extrinsicBuilderFactory.forChain(chainId);
+
     extrinsicBuilder.addCall(getExtrinsic[transaction.type](transaction.args, extrinsicBuilder.api));
+
     return extrinsicBuilder.build(options);
   };
 
-  // Prepare the API instance for the specified chain
   const prepareApi = async (chainId: ChainId): Promise<ApiPromise> => {
     const extrinsicBuilder = await extrinsicBuilderFactory.forChain(chainId);
+
     return extrinsicBuilder.api;
   };
 

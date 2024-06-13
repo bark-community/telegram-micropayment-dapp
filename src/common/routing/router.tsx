@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { Paths } from './paths';
 
-import { OnboardingPage, CreateWalletPage, PasswordPage, OnboardingStartPage } from '@/screens/onboarding';
+import { OnboardingPage, CreateWalletPage, PasswordPage, OnboardingStartPage } from '@/screens/onboarding/';
 import { DashboardMain } from '@/screens/dashboard';
 import {
   SettingsPage,
@@ -11,7 +11,7 @@ import {
   PasswordConfirmationPage,
   RecoveryPage,
 } from '@/screens/settings';
-import { GiftPage, GiftDetailsPage } from '@/screens/gifts';
+import { GiftPage, GiftDetailsPage } from '@/screens/gifts/';
 import {
   TransferPage,
   SelectTokenPage,
@@ -21,7 +21,7 @@ import {
   ResultPage,
   CreateGiftPage,
   AmountGiftPage,
-} from '@/screens/transfer';
+} from '@/screens/transfer/';
 import { MercuryoWidgetPage, SelectTokenExchangePage, ExchangePage } from '@/screens/exchange';
 import { ReceivePage, ReceiveTokenPage } from '@/screens/receive';
 
