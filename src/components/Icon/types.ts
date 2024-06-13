@@ -23,7 +23,6 @@ import Pen from '@common/assets/svg/pen.svg';
 import Blind from '@common/assets/svg/blind.svg';
 import Success from '@common/assets/svg/Success.svg';
 import Loader from '@common/assets/svg/Loader.svg';
-import Bark from '@common/assets/svg/Bark.svg';
 import Star from '@common/assets/svg/Star.svg';
 import Welcome from '@common/assets/svg/welcome/welcome.svg';
 import UserWelcome from '@common/assets/svg/welcome/User.svg';
@@ -64,7 +63,6 @@ const AllIcons = {
   Blind,
   Success,
   Loader,
-  Bark,
   UserWelcome,
   SuccessWelcome,
   DotWelcome,
