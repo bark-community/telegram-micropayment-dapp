@@ -11,9 +11,12 @@ type ExtrinsicProviderContextProps = {
   submitExtrinsic: SubmitExtrinsic;
 };
 
-const ExtrinsicProviderContext = createContext<ExtrinsicProviderContextProps>({} as ExtrinsicProviderContextProps);
+const ExtrinsicProviderContext = createContext<ExtrinsicProviderContextProps>({
+  estimateFee: async () => Promise.reject(new Error('ExtrinsicProvider not initialized')),
+  submitExtrinsic: async () => Promise.reject(new Error('ExtrinsicProvider not initialized')),
+});
 
-export const ExtrinsicProvider = ({ children }: PropsWithChildren) => {
+export const ExtrinsicProvider = ({ children }: PropsWithChildren<{}>) => {
   const { prepareExtrinsic } = useExtrinsicService();
 
   async function estimateFee({ chainId, transaction, signOptions, options }: EstimateFeeParams): Promise<Balance> {
@@ -42,15 +45,16 @@ export const ExtrinsicProvider = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <ExtrinsicProviderContext.Provider
-      value={{
-        estimateFee,
-        submitExtrinsic,
-      }}
-    >
+    <ExtrinsicProviderContext.Provider value={{ estimateFee, submitExtrinsic }}>
       {children}
     </ExtrinsicProviderContext.Provider>
   );
 };
 
-export const useExtrinsicProvider = () => useContext<ExtrinsicProviderContextProps>(ExtrinsicProviderContext);
+export const useExtrinsicProvider = (): ExtrinsicProviderContextProps => {
+  const context = useContext(ExtrinsicProviderContext);
+  if (!context) {
+    throw new Error('useExtrinsicProvider must be used within an ExtrinsicProvider');
+  }
+  return context;
+};

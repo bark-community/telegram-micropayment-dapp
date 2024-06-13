@@ -1,5 +1,4 @@
 import { Address, ChainId } from '@common/types';
-
 import { useExtrinsicService } from '../extrinsicService/ExtrinsicService';
 import { GetExistentialDeposit, GetExistentialDepositStatemine } from './types';
 
@@ -16,14 +15,12 @@ export function useQueryService(): ExtrinsicService {
 
   async function getExistentialDeposit(chainId: ChainId): Promise<string> {
     const api = await prepareApi(chainId);
-
     return api.consts.balances.existentialDeposit.toString();
   }
 
   async function getExistentialDepositStatemine(chainId: ChainId, assetId: string): Promise<string> {
     const api = await prepareApi(chainId);
     const balance = await api.query.assets.asset(assetId);
-
     return balance.value.minBalance.toString();
   }
 
@@ -33,10 +30,8 @@ export function useQueryService(): ExtrinsicService {
     const convertedFee = await api.call.assetConversionApi.quotePriceTokensForExactTokens(
       {
         // Token MultiLocation
-        // @ts-expect-error type error
         parents: 0,
         interior: {
-          // @ts-expect-error type error
           X2: [{ PalletInstance: 50 }, { GeneralIndex: assetId }],
         },
       },
@@ -56,16 +51,13 @@ export function useQueryService(): ExtrinsicService {
 
   async function getFreeBalance(address: Address, chainId: ChainId): Promise<string> {
     const api = await prepareApi(chainId);
-
     const balance = await api.query.system.account(address);
-
     return balance.data.free.toString();
   }
 
   async function getFreeBalanceStatemine(address: Address, chainId: ChainId, assetId: string): Promise<string> {
     const api = await prepareApi(chainId);
     const balance = await api.query.assets.account(assetId, address);
-
     return balance.isNone ? '0' : balance.unwrap().balance.toString();
   }
 
